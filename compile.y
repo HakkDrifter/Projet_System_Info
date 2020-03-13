@@ -3,9 +3,17 @@
     int yylex();
     void yyerror(char * str){printf("%s\n",str);};
 %}
-
-%token tMAIN tINT tEQ tID tPF tPO tAF tPV tVR tAO tVALINT tADD tSUB tMUL tDIV tPRINTF tCONST
-
+%union{
+    int nb;
+    char * str;
+}
+%token tMAIN tINT tEQ tPF tPO tAF tPV tVR tAO tADD tSUB tMUL tDIV tPRINTF tCONST
+%token <str> tID
+%token <nb> tVALINT
+%type  <nb> Expression
+%left tADD tSUB
+%left tMUL tDIV
+%right tEQ
 %%
 %start File;
 File:
@@ -23,14 +31,17 @@ DefinitionN:
     /* vide */
     | tVR tID DefinitionN {printf("DefN\n");}; 
 Affectation:
-    tID tEQ Expression tPV{printf("Affect\n");}; 
+    tID tEQ Expression tPV{ 
+                            printf("Affect\n");}; 
 Expression:
-    tVALINT 
+    tVALINT {$$ = $1;} 
     | tID
-    | Expression tADD Expression
-    | Expression tSUB Expression
-    | Expression tMUL Expression
-    | Expression tDIV Expression {printf("Expression\n");} ;
+    | Expression tADD Expression {$$ = $1 + $3;}
+    | Expression tSUB Expression {$$ = $1 - $3;}
+    | Expression tMUL Expression {$$ = $1 * $3;}
+    | Expression tDIV Expression {$$ = $1 / $3;}
+    | tPO Expression tPF {$$ = $2;
+                          printf("res = %d",$$);};
 %%
 
 int main()

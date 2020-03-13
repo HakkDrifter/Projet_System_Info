@@ -3,5 +3,5 @@ int main()
     int machin = 56;
 	int truc;
 	truc = 89;
-	int yo = machin + 89*56/truc;
+	int yo = (15+10*9);
 }

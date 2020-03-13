@@ -539,8 +539,8 @@ int yy_flex_debug = 1;
 
 static const flex_int16_t yy_rule_linenum[20] =
     {   0,
-       11,   12,   13,   14,   15,   16,   17,   18,   19,   20,
-       21,   22,   23,   24,   25,   26,   27,   28,   29
+       11,   12,   13,   14,   15,   16,   18,   19,   20,   21,
+       22,   23,   24,   25,   26,   27,   28,   29,   31
     } ;
 
 /* The intent behind this definition is that it'll catch
@@ -946,80 +946,82 @@ YY_RULE_SETUP
 case 6:
 YY_RULE_SETUP
 #line 16 "lexical.l"
-{return tVALINT;}
+{ yylval.nb = atof(yytext);
+        return tVALINT;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 17 "lexical.l"
+#line 18 "lexical.l"
 {return tADD;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 18 "lexical.l"
+#line 19 "lexical.l"
 {return tSUB;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 19 "lexical.l"
+#line 20 "lexical.l"
 {return tMUL;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 20 "lexical.l"
+#line 21 "lexical.l"
 {return tDIV;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 21 "lexical.l"
+#line 22 "lexical.l"
 {return tEQ;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 22 "lexical.l"
+#line 23 "lexical.l"
 {return tPO;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 23 "lexical.l"
+#line 24 "lexical.l"
 {return tPF;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 24 "lexical.l"
+#line 25 "lexical.l"
 {return tPV;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 25 "lexical.l"
+#line 26 "lexical.l"
 {return tVR;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 26 "lexical.l"
+#line 27 "lexical.l"
 {return tPRINTF;}
 	YY_BREAK
 case 17:
 /* rule 17 can match eol */
 YY_RULE_SETUP
-#line 27 "lexical.l"
+#line 28 "lexical.l"
 
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 28 "lexical.l"
-{return tID;}
+#line 29 "lexical.l"
+{ yylval.str = strdup(yytext);
+       return tID;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 29 "lexical.l"
+#line 31 "lexical.l"
 {printf("Erreur\n");}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 31 "lexical.l"
+#line 33 "lexical.l"
 ECHO;
 	YY_BREAK
-#line 1023 "lex.yy.c"
+#line 1025 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2168,7 +2170,7 @@ void yyfree (void * ptr )
 
 /* %ok-for-header */
 
-#line 31 "lexical.l"
+#line 33 "lexical.l"
 
 
 int yywrap(void)

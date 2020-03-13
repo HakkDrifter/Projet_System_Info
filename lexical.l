@@ -13,7 +13,8 @@ id [A-Za-z][A-Za-z0-9_]*
 "}" {return tAF;}
 "const" {return tCONST;}
 "int" {return tINT;}
-{int} {return tVALINT;}
+{int} { yylval.nb = atof(yytext);
+        return tVALINT;}
 "+" {return tADD;}
 "-" {return tSUB;}
 "*" {return tMUL;}
@@ -25,7 +26,8 @@ id [A-Za-z][A-Za-z0-9_]*
 "," {return tVR;}
 "printf" {return tPRINTF;}
 {sep} 
-{id} {return tID;}
+{id} { yylval.str = strdup(yytext);
+       return tID;}
 . {printf("Erreur\n");}
 
 %%

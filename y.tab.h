@@ -48,44 +48,55 @@ extern int yydebug;
     tMAIN = 258,
     tINT = 259,
     tEQ = 260,
-    tID = 261,
-    tPF = 262,
-    tPO = 263,
-    tAF = 264,
-    tPV = 265,
-    tVR = 266,
-    tAO = 267,
-    tVALINT = 268,
-    tADD = 269,
-    tSUB = 270,
-    tMUL = 271,
-    tDIV = 272,
-    tPRINTF = 273,
-    tCONST = 274
+    tPF = 261,
+    tPO = 262,
+    tAF = 263,
+    tPV = 264,
+    tVR = 265,
+    tAO = 266,
+    tADD = 267,
+    tSUB = 268,
+    tMUL = 269,
+    tDIV = 270,
+    tPRINTF = 271,
+    tCONST = 272,
+    tID = 273,
+    tVALINT = 274
   };
 #endif
 /* Tokens.  */
 #define tMAIN 258
 #define tINT 259
 #define tEQ 260
-#define tID 261
-#define tPF 262
-#define tPO 263
-#define tAF 264
-#define tPV 265
-#define tVR 266
-#define tAO 267
-#define tVALINT 268
-#define tADD 269
-#define tSUB 270
-#define tMUL 271
-#define tDIV 272
-#define tPRINTF 273
-#define tCONST 274
+#define tPF 261
+#define tPO 262
+#define tAF 263
+#define tPV 264
+#define tVR 265
+#define tAO 266
+#define tADD 267
+#define tSUB 268
+#define tMUL 269
+#define tDIV 270
+#define tPRINTF 271
+#define tCONST 272
+#define tID 273
+#define tVALINT 274
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+
+union YYSTYPE
+{
+#line 6 "compile.y" /* yacc.c:1909  */
+
+    int nb;
+    char * str;
+
+#line 97 "y.tab.h" /* yacc.c:1909  */
+};
+
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif
