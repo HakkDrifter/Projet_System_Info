@@ -4,4 +4,13 @@ int main()
 	int truc;
 	truc = 89;
 	int yo = (15+10*9);
+	const int hey = 9 ; 
+	hey = 5 ; 
+
+	{
+		int variable = 10 ; 
+		truc = 2 ; 
+	}
+
+	variable = 5 ; 
 }

@@ -1014,7 +1014,7 @@ YY_RULE_SETUP
 case 19:
 YY_RULE_SETUP
 #line 31 "lexical.l"
-{printf("Erreur\n");}
+{printf("not recognized");}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP

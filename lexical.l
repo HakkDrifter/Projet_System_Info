@@ -28,7 +28,7 @@ id [A-Za-z][A-Za-z0-9_]*
 {sep} 
 {id} { yylval.str = strdup(yytext);
        return tID;}
-. {printf("Erreur\n");}
+. {printf("not recognized");}
 
 %%
 
