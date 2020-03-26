@@ -4,10 +4,13 @@ typedef struct symbol
     int constant;
     int depth;
     int init;
-    int val;  
+    int addr ; 
 } symbol;
 
-#define SIZE 100
+
+#define SIZE 200
+
+// SYMBOL 
 
 symbol table[SIZE];
 int current_index;
@@ -15,12 +18,22 @@ int current_depth;
 
 symbol* find_s(char * id);
 
-/*
-int is_defined(char* id) ; 
-*/
-
 void add_s(symbol var);
+
+void printInFile(char* s) ; 
 /*
 void delete_s(char * id);
 */
-void decrement_depth();
+void decrementDepth();
+
+void printTable() ; 
+
+
+// TMP var 
+
+int indexTMPVar  ;  
+
+void pushTMPVar() ; 
+
+void popTMPVar() ; 
+

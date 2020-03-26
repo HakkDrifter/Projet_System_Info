@@ -7,10 +7,5 @@ int main()
 	const int hey = 9 ; 
 	hey = 5 ; 
 
-	{
-		int variable = 10 ; 
-		truc = 2 ; 
-	}
-
 	variable = 5 ; 
 }

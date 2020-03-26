@@ -469,8 +469,8 @@ static const yytype_uint8 yytranslate[] =
 static const yytype_uint8 yyrline[] =
 {
        0,    21,    21,    23,    24,    26,    27,    28,    30,    44,
-      59,    61,    75,    90,   106,   120,   136,   137,   138,   139,
-     140,   141,   142,   146,   149
+      59,    61,    74,    88,   110,   125,   142,   146,   151,   156,
+     160,   164,   169,   172,   175
 };
 #endif
 
@@ -482,7 +482,7 @@ static const char *const yytname[] =
   "$end", "error", "$undefined", "tMAIN", "tINT", "tEQ", "tPF", "tPO",
   "tAF", "tPV", "tVR", "tAO", "tADD", "tSUB", "tMUL", "tDIV", "tPRINTF",
   "tCONST", "tID", "tVALINT", "$accept", "File", "Main", "Body",
-  "Definition", "DefinitionN", "Affectation", "AffectationVeauLait",
+  "Definition", "DefinitionN", "Affectation", "AffectationDef",
   "Expression", "Start_Block", "End_Block", YY_NULLPTR
 };
 #endif
@@ -1284,15 +1284,15 @@ yyreduce:
 
   case 8:
 #line 30 "compile.y" /* yacc.c:1646  */
-    { if(find_s((yyvsp[-2].str)) == NULL)
-                                { printf("def\n"); 
-                                symbol s_new ; 
-                                s_new.id = (yyvsp[-2].str) ; 
-                                s_new.constant = 0 ; 
-                                s_new.depth = current_depth ; 
-                                s_new.init = 0 ; 
-                                s_new.val = 0 ; 
-                                add_s(s_new) ;  
+    { if(find_s((yyvsp[-2].str)) == NULL){
+                                    printf("Definition \n"); 
+                                    symbol s_new ; 
+                                    s_new.id = (yyvsp[-2].str) ; 
+                                    s_new.constant = 0 ; 
+                                    s_new.depth = current_depth ; 
+                                    s_new.init = 0 ; 
+                                    add_s(s_new) ;
+                                    printTable() ;   
                                 }
                                 else
                                 {
@@ -1304,15 +1304,15 @@ yyreduce:
   case 9:
 #line 44 "compile.y" /* yacc.c:1646  */
     { 
-                                if(find_s((yyvsp[-2].str)) == NULL)
-                                { printf("def\n"); 
-                                symbol s ; 
-                                s.id = (yyvsp[-2].str) ; 
-                                s.constant = 1 ; 
-                                s.depth = current_depth ; 
-                                s.init = 0 ; 
-                                s.val = 0 ;  
-                                add_s(s) ;  
+                                if(find_s((yyvsp[-2].str)) == NULL){
+                                    printf("Definition CST \n"); 
+                                    symbol s ; 
+                                    s.id = (yyvsp[-2].str) ; 
+                                    s.constant = 1 ; 
+                                    s.depth = current_depth ; 
+                                    s.init = 0 ; 
+                                    add_s(s) ;  
+                                    printTable() ; 
                                 }
                                 else
                                 {
@@ -1324,155 +1324,181 @@ yyreduce:
   case 11:
 #line 61 "compile.y" /* yacc.c:1646  */
     { if(find_s((yyvsp[-1].str)) == NULL)
-                                { printf("def\n"); 
+                                {  printf("Definition  \n"); 
                                 symbol s ; 
                                 s.id = (yyvsp[-1].str) ; 
                                 s.constant = 0 ; 
                                 s.depth = current_depth ; 
                                 s.init = 0 ; 
-                                s.val = 0 ;  
                                 add_s(s) ;  
                                 }
                                 else
                                 {
                                     printf("%s already defined \n",(yyvsp[-1].str)) ; 
                                 }}
-#line 1341 "y.tab.c" /* yacc.c:1646  */
+#line 1340 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 75 "compile.y" /* yacc.c:1646  */
+#line 74 "compile.y" /* yacc.c:1646  */
     { if(find_s((yyvsp[-1].str)) == NULL)
-                                { printf("def\n"); 
+                                { printf("Definition CST \n"); 
                                 symbol s ; 
                                 s.id = (yyvsp[-1].str) ; 
                                 s.constant = 0 ; 
                                 s.depth = current_depth ; 
                                 s.init = 0 ; 
-                                s.val = 0 ;  
                                 add_s(s) ;  
                                 }
                                 else
                                 {
                                     printf("%s already defined \n",(yyvsp[-1].str)) ; 
                                 }}
-#line 1360 "y.tab.c" /* yacc.c:1646  */
+#line 1358 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 90 "compile.y" /* yacc.c:1646  */
+#line 88 "compile.y" /* yacc.c:1646  */
     {     symbol* s = find_s((yyvsp[-3].str)) ; 
                                 if(s != NULL)
                                 {
-                                if(s->constant == 1 && s->init == 1)
-                                {
-                                    printf("%s constant already affected \n",(yyvsp[-3].str)) ;
-                                }
-                                s->init = 1 ; 
-                                s->val = (yyvsp[-1].nb) ;  
+                                    
+                                    if(s->constant == 1 && s->init == 1)
+                                    {
+                                        printf("%s constant already affected \n",(yyvsp[-3].str)) ;
+                                    }
+                                    else{
+                                        printf("Affectation\n"); 
+                                        s->init = 1 ; 
+                                        printf("COP %d %d",s->addr,indexTMPVar-1) ; 
+                                        popTMPVar() ; 
+                                    }
+                                    
                                 }
                                 else
                                 {
                                     printf("%s not defined \n",(yyvsp[-3].str)) ; 
                                 }}
-#line 1379 "y.tab.c" /* yacc.c:1646  */
+#line 1383 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 106 "compile.y" /* yacc.c:1646  */
+#line 110 "compile.y" /* yacc.c:1646  */
     { if(find_s((yyvsp[-3].str)) == NULL)
-                                { printf("def\n"); 
+                                { printf("AffectationDef\n"); 
                                 symbol s_new ; 
                                 s_new.id = (yyvsp[-3].str) ; 
                                 s_new.constant = 0 ; 
                                 s_new.depth = current_depth ; 
-                                s_new.init = 1 ; 
-                                s_new.val = (yyvsp[-1].nb) ; 
+                                s_new.init = 1 ;  
                                 add_s(s_new) ;  
+                                printf("COP %d %d",s_new.addr,indexTMPVar-1) ; 
+                                popTMPVar() ; 
                                 }
                                 else
                                 {
                                     printf("%s already defined \n",(yyvsp[-3].str)) ; 
                                 }}
-#line 1398 "y.tab.c" /* yacc.c:1646  */
+#line 1403 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 120 "compile.y" /* yacc.c:1646  */
+#line 125 "compile.y" /* yacc.c:1646  */
     { if(find_s((yyvsp[-3].str)) == NULL)
-                                { printf("def\n"); 
+                                { printf("AffectationDef CST\n"); 
                                 symbol s_new ; 
                                 s_new.id = (yyvsp[-3].str) ; 
                                 s_new.constant = 1 ; 
                                 s_new.depth = current_depth ; 
                                 s_new.init = 1 ; 
-                                s_new.val = (yyvsp[-1].nb) ; 
                                 add_s(s_new) ;  
+                                printf("COP %d %d",s_new.addr,indexTMPVar-1) ; 
+                                popTMPVar() ; 
                                 }
                                 else
                                 {
                                     printf("%s already defined \n",(yyvsp[-3].str)) ; 
                                 }}
-#line 1417 "y.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 16:
-#line 136 "compile.y" /* yacc.c:1646  */
-    {(yyval.nb) = (yyvsp[0].nb);}
 #line 1423 "y.tab.c" /* yacc.c:1646  */
     break;
 
+  case 16:
+#line 142 "compile.y" /* yacc.c:1646  */
+    {
+            printf("AFC %d %d \n",indexTMPVar,(yyvsp[0].nb)) ; 
+            pushTMPVar() ; 
+    }
+#line 1432 "y.tab.c" /* yacc.c:1646  */
+    break;
+
   case 17:
-#line 137 "compile.y" /* yacc.c:1646  */
-    { (yyval.nb) = find_s((yyvsp[0].str))->val ;}
-#line 1429 "y.tab.c" /* yacc.c:1646  */
+#line 146 "compile.y" /* yacc.c:1646  */
+    {
+            int i = find_s((yyvsp[0].str))->addr ; 
+            printf("COP %d %d \n",indexTMPVar,i) ; 
+            pushTMPVar() ; 
+         }
+#line 1442 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 18:
-#line 138 "compile.y" /* yacc.c:1646  */
-    {(yyval.nb) = (yyvsp[-2].nb) + (yyvsp[0].nb);}
-#line 1435 "y.tab.c" /* yacc.c:1646  */
+#line 151 "compile.y" /* yacc.c:1646  */
+    {
+                                popTMPVar() ; 
+                                popTMPVar() ; 
+                                printf("ADD %d %d %d \n",indexTMPVar,indexTMPVar, indexTMPVar+1) ;
+    }
+#line 1452 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 19:
-#line 139 "compile.y" /* yacc.c:1646  */
-    {(yyval.nb) = (yyvsp[-2].nb) - (yyvsp[0].nb);}
-#line 1441 "y.tab.c" /* yacc.c:1646  */
+#line 156 "compile.y" /* yacc.c:1646  */
+    {
+                                popTMPVar() ;   
+                                popTMPVar() ; 
+                                printf("SUB %d %d %d \n",indexTMPVar,indexTMPVar, indexTMPVar+1) ;}
+#line 1461 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 20:
-#line 140 "compile.y" /* yacc.c:1646  */
-    {(yyval.nb) = (yyvsp[-2].nb) * (yyvsp[0].nb);}
-#line 1447 "y.tab.c" /* yacc.c:1646  */
+#line 160 "compile.y" /* yacc.c:1646  */
+    {  
+                                popTMPVar() ; 
+                                popTMPVar() ;                               
+                                printf("MUL %d %d %d \n",indexTMPVar,indexTMPVar, indexTMPVar+1) ;}
+#line 1470 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 21:
-#line 141 "compile.y" /* yacc.c:1646  */
-    {(yyval.nb) = (yyvsp[-2].nb) / (yyvsp[0].nb);}
-#line 1453 "y.tab.c" /* yacc.c:1646  */
+#line 164 "compile.y" /* yacc.c:1646  */
+    {
+                                popTMPVar() ; 
+                                popTMPVar() ; 
+                                printf("DIV %d %d %d \n",indexTMPVar,indexTMPVar, indexTMPVar+1) ;
+    }
+#line 1480 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 22:
-#line 142 "compile.y" /* yacc.c:1646  */
-    {(yyval.nb) = (yyvsp[-1].nb);
-                          printf("res = %d \n",(yyval.nb));}
-#line 1460 "y.tab.c" /* yacc.c:1646  */
+#line 169 "compile.y" /* yacc.c:1646  */
+    { }
+#line 1486 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 23:
-#line 146 "compile.y" /* yacc.c:1646  */
+#line 172 "compile.y" /* yacc.c:1646  */
     {current_depth++;}
-#line 1466 "y.tab.c" /* yacc.c:1646  */
+#line 1492 "y.tab.c" /* yacc.c:1646  */
     break;
 
   case 24:
-#line 149 "compile.y" /* yacc.c:1646  */
-    {decrement_depth();}
-#line 1472 "y.tab.c" /* yacc.c:1646  */
+#line 175 "compile.y" /* yacc.c:1646  */
+    {decrementDepth();}
+#line 1498 "y.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1476 "y.tab.c" /* yacc.c:1646  */
+#line 1502 "y.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1700,11 +1726,12 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 151 "compile.y" /* yacc.c:1906  */
+#line 177 "compile.y" /* yacc.c:1906  */
 
 
 int main()
 {
+    indexTMPVar = 100 ; 
     yyparse();
     return 0;
 }
