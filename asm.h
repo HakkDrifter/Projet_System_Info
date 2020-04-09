@@ -14,6 +14,9 @@ int currentIndexASM;
 int tempLine;
 int throughIf ; 
 
+/* WHILE */
+ int loopLine ; 
+
 void printASMTable() ; 
 void printASMInFile() ; 
 

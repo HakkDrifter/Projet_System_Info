@@ -48,7 +48,16 @@ If_Else:
     }; 
 
 While: 
-    tWHILE tPO Expression tPF Start_Block Body End_Block {} ;
+    tWHILE tPO { 
+        loopLine = currentIndexASM ; 
+        }
+    Expression tPF { 
+                            tempLine = addASM("JMF",indexTMPVar-1,-1,-1) ; 
+                            popTMPVar();}
+    Start_Block Body End_Block {
+        addASM("JMP",loopLine,-1,-1) ; 
+        modifyASM_JMF(tempLine) ; 
+    } ;
 
 Definition:
     tINT tID DefinitionN tPV { if(find_s($2) == NULL){
@@ -234,6 +243,7 @@ int main()
     indexTMPVar = 100 ; 
     yyparse();
     printASMTable() ; 
+    printASMInFile() ; 
     return 0;
 }
 

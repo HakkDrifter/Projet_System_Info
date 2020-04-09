@@ -7,7 +7,15 @@ void printASMTable(){
     printf("ASMTable : \n") ; 
     for(int i = 0 ; i < currentIndexASM ; i++)
     {
-        printf("%s %d %d %d \n",tableASM[i].CMD,tableASM[i].res,tableASM[i].op1, tableASM[i].op2) ;
+            if(tableASM[i].op1 == -1){
+                printf("%s %d  \n",tableASM[i].CMD,tableASM[i].res) ; 
+            }
+            else if(tableASM[i].op2 == -1){
+                printf("%s %d %d \n",tableASM[i].CMD,tableASM[i].res,tableASM[i].res,tableASM[i].op1) ; 
+            }
+            else{
+                printf("%s %d %d %d \n",tableASM[i].CMD,tableASM[i].res,tableASM[i].op1, tableASM[i].op2) ; 
+            }
     }
 }
 
@@ -18,8 +26,18 @@ void printASMInFile(){
     if ( f != NULL)
     {
         for(int i = 0 ; i < currentIndexASM ; i++){
-
-            fprintf(f, "%s %d %d %d \n",tableASM[i].CMD,tableASM[i].res,tableASM[i].op1, tableASM[i].op2) ; 
+            
+            if(tableASM[i].op1 == -1){
+                fprintf(f, "%s %d  \n",tableASM[i].CMD,tableASM[i].res) ; 
+            }
+            else if(tableASM[i].op2 == -1){
+                fprintf(f, "%s %d %d \n",tableASM[i].CMD,tableASM[i].res,tableASM[i].res,tableASM[i].op1) ; 
+            }
+            else{
+                fprintf(f, "%s %d %d %d \n",tableASM[i].CMD,tableASM[i].res,tableASM[i].op1, tableASM[i].op2) ; 
+            }
+            
+            
         }
 
         fclose(f) ; 
