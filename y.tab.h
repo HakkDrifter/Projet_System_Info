@@ -48,52 +48,64 @@ extern int yydebug;
     tMAIN = 258,
     tINT = 259,
     tEQ = 260,
-    tPF = 261,
-    tPO = 262,
-    tAF = 263,
-    tPV = 264,
-    tVR = 265,
-    tAO = 266,
-    tADD = 267,
-    tSUB = 268,
-    tMUL = 269,
-    tDIV = 270,
-    tPRINTF = 271,
-    tCONST = 272,
-    tID = 273,
-    tVALINT = 274
+    tIF = 261,
+    tELSE = 262,
+    tWHILE = 263,
+    tPF = 264,
+    tPO = 265,
+    tAF = 266,
+    tPV = 267,
+    tVR = 268,
+    tAO = 269,
+    tADD = 270,
+    tSUB = 271,
+    tMUL = 272,
+    tDIV = 273,
+    tPRINTF = 274,
+    tCONST = 275,
+    tEQEQ = 276,
+    tSUP = 277,
+    tINF = 278,
+    tID = 279,
+    tVALINT = 280
   };
 #endif
 /* Tokens.  */
 #define tMAIN 258
 #define tINT 259
 #define tEQ 260
-#define tPF 261
-#define tPO 262
-#define tAF 263
-#define tPV 264
-#define tVR 265
-#define tAO 266
-#define tADD 267
-#define tSUB 268
-#define tMUL 269
-#define tDIV 270
-#define tPRINTF 271
-#define tCONST 272
-#define tID 273
-#define tVALINT 274
+#define tIF 261
+#define tELSE 262
+#define tWHILE 263
+#define tPF 264
+#define tPO 265
+#define tAF 266
+#define tPV 267
+#define tVR 268
+#define tAO 269
+#define tADD 270
+#define tSUB 271
+#define tMUL 272
+#define tDIV 273
+#define tPRINTF 274
+#define tCONST 275
+#define tEQEQ 276
+#define tSUP 277
+#define tINF 278
+#define tID 279
+#define tVALINT 280
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 
 union YYSTYPE
 {
-#line 7 "compile.y" /* yacc.c:1909  */
+#line 8 "compile.y" /* yacc.c:1909  */
 
     int nb;
     char * str;
 
-#line 97 "y.tab.h" /* yacc.c:1909  */
+#line 109 "y.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

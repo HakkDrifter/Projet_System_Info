@@ -1,6 +1,7 @@
 %{
     #include <stdio.h>
     #include "symboltable.h"
+    #include "asm.h"
     int yylex();
     void yyerror(char * str){printf("%s\n",str);};
 %}
@@ -8,7 +9,7 @@
     int nb;
     char * str;
 }
-%token tMAIN tINT tEQ tPF tPO tAF tPV tVR tAO tADD tSUB tMUL tDIV tPRINTF tCONST
+%token tMAIN tINT tEQ tIF tELSE tWHILE tPF tPO tAF tPV tVR tAO tADD tSUB tMUL tDIV tPRINTF tCONST tEQEQ tSUP tINF 
 %token <str> tID
 %token <nb> tVALINT
 %type  <nb> Expression
@@ -25,7 +26,30 @@ Body:
     /* vide */
     | Definition Body
     | Affectation Body 
-    | AffectationDef Body ; 
+    | AffectationDef Body 
+    | If 
+    | If_Else 
+    | While ;  
+
+If:
+    tIF tPO Expression tPF { 
+                            tempLine = addASM("JMF",indexTMPVar-1,-1,-1) ; 
+                            popTMPVar();}
+    Start_Block Body End_Block { 
+        modifyASM_JMF(tempLine) ; 
+    } ; 
+If_Else:
+    If tELSE { 
+        modifyASM_JMF_else(tempLine) ; 
+        tempLine = addASM("JMP",-1,-1,-1) ; 
+    }
+    Start_Block Body End_Block {
+        modifyASM_JMP(tempLine) ; 
+    }; 
+
+While: 
+    tWHILE tPO Expression tPF Start_Block Body End_Block {} ;
+
 Definition:
     tINT tID DefinitionN tPV { if(find_s($2) == NULL){
                                     printf("Definition \n"); 
@@ -96,13 +120,14 @@ Affectation:
                                     else{
                                         printf("Affectation\n"); 
                                         s->init = 1 ; 
-                                        printf("COP %d %d",s->addr,indexTMPVar-1) ; 
+                                        addASM("COP",s->addr,indexTMPVar-1,-1) ; 
                                         popTMPVar() ; 
                                     }
                                     
                                 }
                                 else
                                 {
+                                    popTMPVar() ; 
                                     printf("%s not defined \n",$1) ; 
                                 }}  ; 
 
@@ -115,12 +140,14 @@ AffectationDef:
                                 s_new.depth = current_depth ; 
                                 s_new.init = 1 ;  
                                 add_s(s_new) ;  
-                                printf("COP %d %d",s_new.addr,indexTMPVar-1) ; 
+                                addASM("COP",s_new.addr,indexTMPVar-1,-1) ; 
                                 popTMPVar() ; 
                                 }
                                 else
-                                {
+                                { 
+                                    
                                     printf("%s already defined \n",$2) ; 
+                                    popTMPVar() ; 
                                 }} ; 
     | tCONST tINT tID tEQ Expression tPV { if(find_s($3) == NULL)
                                 { printf("AffectationDef CST\n"); 
@@ -130,49 +157,75 @@ AffectationDef:
                                 s_new.depth = current_depth ; 
                                 s_new.init = 1 ; 
                                 add_s(s_new) ;  
-                                printf("COP %d %d",s_new.addr,indexTMPVar-1) ; 
+                                addASM("COP",s_new.addr,indexTMPVar-1,-1) ; 
                                 popTMPVar() ; 
                                 }
                                 else
                                 {
                                     printf("%s already defined \n",$3) ; 
+                                    popTMPVar() ; 
                                 }} ; 
 
 Expression:
     tVALINT {
-            printf("AFC %d %d \n",indexTMPVar,$1) ; 
+            addASM("AFC",indexTMPVar,$1,-1) ; 
             pushTMPVar() ; 
     } 
     | tID {
             int i = find_s($1)->addr ; 
-            printf("COP %d %d \n",indexTMPVar,i) ; 
+            addASM("COP",indexTMPVar-1,i,-1) ; 
             pushTMPVar() ; 
          }
     | Expression tADD Expression {
                                 popTMPVar() ; 
                                 popTMPVar() ; 
-                                printf("ADD %d %d %d \n",indexTMPVar,indexTMPVar, indexTMPVar+1) ;
+                                pushTMPVar() ;
+                                addASM("ADD",indexTMPVar-1,indexTMPVar-1,indexTMPVar) ; 
     }
     | Expression tSUB Expression {
                                 popTMPVar() ;   
                                 popTMPVar() ; 
-                                printf("SUB %d %d %d \n",indexTMPVar,indexTMPVar, indexTMPVar+1) ;}
+                                pushTMPVar() ;
+                                addASM("SUB",indexTMPVar-1,indexTMPVar-1,indexTMPVar) ; }
     | Expression tMUL Expression {  
                                 popTMPVar() ; 
-                                popTMPVar() ;                               
-                                printf("MUL %d %d %d \n",indexTMPVar,indexTMPVar, indexTMPVar+1) ;}
+                                popTMPVar() ;       
+                                pushTMPVar() ;                        
+                                addASM("MUL",indexTMPVar-1,indexTMPVar-1,indexTMPVar) ; }
+
     | Expression tDIV Expression {
                                 popTMPVar() ; 
                                 popTMPVar() ; 
-                                printf("DIV %d %d %d \n",indexTMPVar,indexTMPVar, indexTMPVar+1) ;
+                                pushTMPVar() ;
+                                addASM("DIV",indexTMPVar-1,indexTMPVar-1,indexTMPVar) ; 
     }
     | tPO Expression tPF { };
+    | Expression tSUP Expression {
+                                popTMPVar() ; 
+                                popTMPVar() ; 
+                                pushTMPVar() ;
+                                addASM("SUP",indexTMPVar-1,indexTMPVar-1,indexTMPVar) ; 
+    }
+    | Expression tINF Expression {
+                                popTMPVar() ; 
+                                popTMPVar() ; 
+                                pushTMPVar() ;
+                                addASM("INF",indexTMPVar-1,indexTMPVar-1,indexTMPVar) ; 
+    }
+    | Expression tEQEQ Expression {
+                                popTMPVar() ; 
+                                popTMPVar() ; 
+                                pushTMPVar() ;
+                                addASM("EQU",indexTMPVar-1,indexTMPVar-1,indexTMPVar) ; 
+    }
 
 Start_Block:
     tAO {current_depth++;} ; 
 
 End_Block:
-    tAF {decrementDepth();} ; 
+    tAF {
+        decrementDepth();
+        } ; 
 
 %%
 
@@ -180,6 +233,7 @@ int main()
 {
     indexTMPVar = 100 ; 
     yyparse();
+    printASMTable() ; 
     return 0;
 }
 

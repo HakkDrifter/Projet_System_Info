@@ -11,6 +11,12 @@ id [A-Za-z][A-Za-z0-9_]*
 "main()" {return tMAIN;}
 "{" {return tAO;}
 "}" {return tAF;}
+"if" {return tIF ;}
+"else" {return tELSE;}
+"while" {return tWHILE ;}
+">" {return tSUP ;}
+"<" {return tINF ;}
+"==" {return tEQEQ ;}
 "const" {return tCONST;}
 "int" {return tINT;}
 {int} { yylval.nb = atof(yytext);
